@@ -5,7 +5,7 @@ import Product from "../models/Product.js";
 const router = express.Router();
 
 // Create
-router.post('/', checkAdmin, async (req, res) => {
+router.post('/', /* checkAdmin, */ async (req, res) => {
     try {
         const product = new Product(req.body)
         await product.save();
@@ -16,7 +16,7 @@ router.post('/', checkAdmin, async (req, res) => {
 });
 
 // Update
-router.put('/:id', checkAdmin, async (req, res) => {
+router.put('/:id', /* checkAdmin, */ async (req, res) => {
     try {
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
             $set: req.body
@@ -62,9 +62,11 @@ router.get('/', async (req, res) => {
 
 //Get single product
 router.get('/:id', async (req, res) => {
+    const id = req.params.id
     try {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(id);
         res.status(200).json(product)
+        console.log(product)
     } catch (error) {
         res.status(500).json(error)
     }
